@@ -19,7 +19,6 @@ class main:
     def recursive_backtracking(self):
         #print(self.assignment)
 
-        # todo Verfier_completude()
         if self.verifier_completude():
             return self.assignment
         x, y = self.Select_Unasigned_Variable()
@@ -52,6 +51,17 @@ class main:
 
         valeurs.sort(key=lambda x: x[1])
         return valeurs
+
+
+    # Check si la grille est full, le 0 signifie que le case est vide
+    def verifier_completude(self):
+        full = True
+        for ligne in self.assignment:
+            for case in ligne:
+                if case[0] == 0:
+                    full = False
+                    break
+        return full
 
     def Select_Unasigned_Variable(self):
 
