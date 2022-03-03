@@ -12,7 +12,7 @@ class main:
         self.contraintes = {}
         self.assignment = [[[0, 0, []] for i in range(taille * taille)] for j in range(taille * taille)]
 
-    # todo affichage de la grille 9*9
+    # todo contraintes binaires
     def creer_contrainte(self):
         pass
 
