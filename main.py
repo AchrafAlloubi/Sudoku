@@ -10,7 +10,15 @@ class main:
         for t in range(1, taille*taille + 1):
             self.domaine.append(t)
         self.contraintes = {}
+        self.assignment = [[[0, 0, []] for i in range(taille * taille)] for j in range(taille * taille)]
 
+    # todo affichage de la grille 9*9
+    def creer_contrainte(self):
+        pass
+
+    # todo affichage de la grille 9*9
+    def afficher_grille(self):
+        pass
 
     #Pseudo code dans le cours
     def backtracking_search(self):
