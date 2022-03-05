@@ -103,13 +103,14 @@ class main:
     # cela depend de la technique utilisée
     def Select_Unasigned_Variable(self):
 
-        if self.technique == "least constraining value" :
+        if self.technique == "ac3" or self.technique == "least constraining value":
             caseSelectionnee = [[0, 0], self.taille * self.taille + 1]
             for x in range(0, self.taille * self.taille):
                 for y in range(0, self.taille * self.taille):
                     if self.gride[x][y][0] == 0:
                         caseSelectionnee = [[x, y], self.gride[x][y][1]]
                         return caseSelectionnee[0][0], caseSelectionnee[0][1]
+
 
         elif self.technique == "mrv":
             caseSelectionnee = [[0,0], self.taille*self.taille + 1]
@@ -120,9 +121,16 @@ class main:
                         if self.gride[x][y][1] < caseSelectionnee[1]:
                             caseSelectionnee = [[x,y], self.gride[x][y][1]]
 
-        #todo boucle degree heuristic
+
         elif self.technique == "degree heuristic":
-            pass
+
+            caseSelectionnee = [[self.taille * self.taille + 1, self.taille * self.taille + 1], 0]
+            for x in range(0, self.taille * self.taille):
+                for y in range(0, self.taille * self.taille):
+                    if self.gride[x][y][0] == 0:
+                        key = "[" + str(x) + "," + str(y) + "]"
+                        if len(self.contraintes[key]) > caseSelectionnee[1]:
+                            caseSelectionnee = [[x, y], self.gride[x][y][1]]
 
 
         return caseSelectionnee[0][0], caseSelectionnee[0][1]
@@ -201,3 +209,46 @@ class main:
 
         valeurs.sort(key=lambda x: x[1])
         return valeurs
+
+
+    # algo permet de créer liste of all arcs de la grille
+    def list_arc_making(self):
+        var=self.contraintes.copy()
+        liste_arc=[]
+        for i in self.domaines:
+            for j in self.domaines:
+                key=[i-1,j-1]
+                arc=var.pop('['+str(key[0])+','+str(key[1])+']')
+                for k in arc:
+                    liste_arc+=[(key,k)]
+        return liste_arc
+
+    def test_inconsistance(self, x, Wj):
+
+        for y in self.gride[Wj[0]][Wj[1]][2]:
+            if x != y:
+                return False
+        return True
+
+        # enlever les x des domaines de Wi si x n'est pas consistant
+        # True ==> at least une valeur est retiree
+        # False ==> Sinon
+
+    def enlever_valeurs_inconsistantes(self, Wi, Wj):
+
+        done = False
+        for x in self.gride[Wi[0]][Wi[1]][2]:
+            if self.test_inconsistance(x, Wj):
+                self.gride[Wi[0]][Wi[1]][2].remove(x)
+                self.gride[Wi[0]][Wi[1]][1] -= 1
+                done = True
+        return done
+
+    def Arc_Consistency3(self):
+        tail = self.list_arc_making()
+
+        while (len(tail) > 0):
+            Wi, Wj = tail.pop(0)
+            if self.remove_inconsistent_values(Wi, Wj):
+                for Wk in self.contraintes.get('[' + str(Wi[0]) + ',' + str(Wi[1]) + ']'):
+                    tail = tail + [(Wk, Wi)]
