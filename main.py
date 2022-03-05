@@ -21,7 +21,7 @@ class main:
         # valeur de la case, nbre de valeur dispo pour la case, la liste des valeurs dispo pour la case
         self.gride = [[[0, 0, []] for i in range(taille * taille)] for j in range(taille * taille)]
 
-    # todo contraintes binaires
+
     def creer_contrainte(self):
 
         for x in range(0, self.taille * self.taille):
@@ -51,10 +51,12 @@ class main:
     def afficher_grille(self):
         pass
 
-    # todo algo restant : AC3
+
     # MRV => on va parcourir l'ensemble des cases declarées dans la var self.gride et on recupere la case
     #dont le domaine est le plus petit
     #degree heuristic => doit retourner la case possedant le plus grand nombre de contraintes binaires
+
+
     #Pseudo code dans le cours
     def backtracking_search(self):
         return self.recursive_backtracking()
@@ -98,6 +100,7 @@ class main:
                     full = False
                     break
         return full
+
 
     # retourne les coordonnées de la case à laquelle on va assigner une valeur
     # cela depend de la technique utilisée
