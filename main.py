@@ -456,7 +456,14 @@ class Interface(QMainWindow):
 
     def choiceBar(self):
         menuBar = self.menuBar()
+        menuBar.setStyleSheet("color: red; border: 4px solid black;")
+        font = menuBar.font()
+        font.setPointSize(20)
+        menuBar.setFont(font)
         self.techniqueMenu = menuBar.addMenu("&Technique utilisée")
+        font = self.techniqueMenu.font()
+        font.setPointSize(20)
+        self.techniqueMenu.setFont(font)
 
         ac3_action = QAction("AC 3", self)
         ac3_action.setStatusTip("Technique AC3")
