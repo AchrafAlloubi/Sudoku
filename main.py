@@ -27,6 +27,7 @@ class main:
         for t in range(1, taille*taille + 1):
             self.domaines.append(t)
         self.contraintes = {}
+
         # liste de toutes les cases, chaque case est definie de :
         # valeur de la case, nbre de valeur dispo pour la case, la liste des valeurs dispo pour la case
         self.gride = [[[0, 0, []] for i in range(taille * taille)] for j in range(taille * taille)]
@@ -178,7 +179,9 @@ class main:
     # retourne les coordonnées de la case à laquelle on va assigner une valeur
     # cela depend de la technique utilisée
     def Select_Unasigned_Variable(self):
+
         if self.technique == "mrv":
+
             caseSelectionnee = [[0,0], self.taille*self.taille + 1]
             for x in range(0,self.taille*self.taille):
                 for y in range(0,self.taille*self.taille):
@@ -456,7 +459,7 @@ class Interface(QMainWindow):
 
     def choiceBar(self):
         menuBar = self.menuBar()
-        menuBar.setStyleSheet("color: red; border: 4px solid black;")
+        menuBar.setStyleSheet("color: red; border: 4px solid black;border-radius: 10px")
         font = menuBar.font()
         font.setPointSize(20)
         menuBar.setFont(font)
@@ -465,30 +468,31 @@ class Interface(QMainWindow):
         font.setPointSize(20)
         self.techniqueMenu.setFont(font)
 
-        ac3_action = QAction("AC 3", self)
-        ac3_action.setStatusTip("Technique AC3")
+        ac3_btn = QAction("AC 3", self)
+        ac3_btn.setStatusTip("Technique AC3")
         #connecter bouton à la methode
-        ac3_action.triggered.connect(self.Arc_Consistency3_clicked)
+        ac3_btn.triggered.connect(self.Arc_Consistency3_clicked)
 
-        mrv_action = QAction("MRV", self)
-        mrv_action.setStatusTip("Technique MRV")
+        mrv_btn = QAction("MRV", self)
+        mrv_btn.setStatusTip("Technique MRV")
         #connecter bouton à la methode
-        mrv_action.triggered.connect(self.MRV_clicked)
+        mrv_btn.triggered.connect(self.MRV_clicked)
 
-        degree_action = QAction("degree_heuristic", self)
-        degree_action.setStatusTip("Technique degree heuristic")
+        degree_heuristic_btn = QAction("degree_heuristic", self)
+        degree_heuristic_btn.setStatusTip("Technique degree heuristic")
         #connecter bouton à la methode
-        degree_action.triggered.connect(self.DegreeHeuristic_clicked)
+        degree_heuristic_btn.triggered.connect(self.DegreeHeuristic_clicked)
 
-        lcv_action = QAction("least_constraining_value", self)
-        lcv_action.setStatusTip("Technique least constraining value")
+        lcv_btn = QAction("least_constraining_value", self)
+        lcv_btn.setStatusTip("Technique least constraining value")
         #connecter bouton à la methode
-        lcv_action.triggered.connect(self.LeastConstrainingValue_clicked)
+        lcv_btn.triggered.connect(self.LeastConstrainingValue_clicked)
+        self.techniqueMenu.addAction(lcv_btn)
+        self.techniqueMenu.addAction(ac3_btn)
+        self.techniqueMenu.addAction(degree_heuristic_btn)
+        self.techniqueMenu.addAction(mrv_btn)
 
-        self.techniqueMenu.addAction(ac3_action)
-        self.techniqueMenu.addAction(mrv_action)
-        self.techniqueMenu.addAction(degree_action)
-        self.techniqueMenu.addAction(lcv_action)
+
 
 
     def Arc_Consistency3_clicked(self, s):
